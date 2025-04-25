@@ -1,0 +1,12 @@
+[project]
+name = "mcp-server-docreader"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "faiss-cpu>=1.10.0",
+    "mcp[cli]>=1.6.0",
+    "pymupdf>=1.25.5",
+    "sentence-transformers>=4.1.0",
+]

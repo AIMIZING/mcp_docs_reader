@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "docreader": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\PATH\\TO\\mcp_docs_reader",
+        "run",
+        "docReader.py"
+      ]
+    }
+  }
+}
