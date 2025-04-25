@@ -1,4 +1,4 @@
-# mcp-docs-rag
+# mcp-docs-reader
 A lightweight MCP (Model Context Protocol) server that loads PDF files from a local folder, extracts and chunks their content, builds a semantic search index, and sends relevant passages to Claude Desktop for document-based question answering.
 
 This project is intended to be used with **Claude's MCP desktop feature**.
