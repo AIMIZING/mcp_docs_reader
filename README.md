@@ -1,12 +1,12 @@
 # mcp-docs-reader
-A lightweight MCP (Model Context Protocol) server that loads PDF files from a local folder, extracts and chunks their content, builds a semantic search index, and sends relevant passages to Claude Desktop for document-based question answering.
+A lightweight MCP (Model Context Protocol) server that loads PDF and Excel (XLSX) files from a local folder, extracts and chunks their content, builds a semantic search index, and sends relevant passages to Claude Desktop for document-based question answering.
 
 This project is intended to be used with **Claude's MCP desktop feature**.
 
 ---
 
 ## Features
-- Loads and processes PDF documents from a local *docs/* folder
+- Loads and processes PDF and Excel documents from a local *docs/* folder
 - Extracts text and splits it into semantic chunks
 - Generates vector embeddings using SentenceTransformer
 - Builds a FAISS-based vector index for semantic search
@@ -70,6 +70,6 @@ with your actual local project path (e.g. C:\\Users\\YourName\\Documents\\mcp_do
 ### 5. Run Claude Desktop
 Launch Claude Desktop.
 Once it's running, it will automatically detect and connect to the configured MCP tool.
-You can now ask Claude questions based on your local PDF documents, like:
+You can now ask Claude questions based on your local PDF or Excel documents, like:
 
 > "Summarize the key points from the registered file contents."
