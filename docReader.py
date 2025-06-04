@@ -3,6 +3,7 @@ import traceback
 from sentence_transformers import SentenceTransformer
 import os
 import fitz  # PyMuPDF
+import openpyxl
 import faiss
 import numpy as np
 
@@ -26,6 +27,16 @@ def extract_text_from_pdf(file_path):
     doc = fitz.open(file_path)
     return "\n".join([page.get_text() for page in doc])
 
+def extract_text_from_excel(file_path):
+    wb = openpyxl.load_workbook(file_path, data_only=True)
+    lines = []
+    for ws in wb.worksheets:
+        for row in ws.iter_rows(values_only=True):
+            values = [str(cell) for cell in row if cell is not None]
+            if values:
+                lines.append(" ".join(values))
+    return "\n".join(lines)
+
 def split_into_chunks(text, chunk_size=300):
     sentences = text.split("\n")
     chunks, chunk = [], ""
@@ -42,11 +53,15 @@ def split_into_chunks(text, chunk_size=300):
 def load_and_chunk_documents(doc_dir):
     all_chunks = []
     for file in os.listdir(doc_dir):
+        full_path = os.path.join(doc_dir, file)
         if file.endswith(".pdf"):
-            full_path = os.path.join(doc_dir, file)
             raw_text = extract_text_from_pdf(full_path)
-            chunks = split_into_chunks(raw_text)
-            all_chunks.extend(chunks)
+        elif file.endswith(".xlsx"):
+            raw_text = extract_text_from_excel(full_path)
+        else:
+            continue
+        chunks = split_into_chunks(raw_text)
+        all_chunks.extend(chunks)
     return all_chunks
 
 # 임베딩
@@ -56,7 +71,7 @@ def get_embeddings(chunks):
     return model.encode(chunks)
 
 # Tool 등록
-@mcp.tool(name="query_documents", description="PDF 문서를 검색하고 Claude에 질문을 전달합니다.")
+@mcp.tool(name="query_documents", description="PDF 또는 Excel 문서를 검색하고 Claude에 질문을 전달합니다.")
 def query_documents(query: str) -> str:
     try:
         print(f"[질문] {query}")
