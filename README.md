@@ -52,7 +52,7 @@ pip install -r requirements.txt
 - run the included **"setup.bat"** file
 
 ### 4. Configure Claude Desktop
-Open the included **"weather_config.json"** file, and copy its content.
+Open the included **"docReader_config.json"** file, and copy its content.
 Then, open your existing Claude Desktop configuration file and append the copied content.
 
 To locate the Claude Desktop config file:
