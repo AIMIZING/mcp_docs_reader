@@ -10,6 +10,8 @@ mcp = FastMCP("docreader")
 
 # 벡터DB
 def build_or_load_index(chunks):
+    if not chunks:
+        raise ValueError("No document chunks available for indexing")
     vectors = get_embeddings(chunks)
     dim = len(vectors[0])
     index = faiss.IndexFlatL2(dim)
@@ -23,8 +25,8 @@ def search_similar_chunks(query, index, chunks, top_k=5):
 
 # 텍스트 추출
 def extract_text_from_pdf(file_path):
-    doc = fitz.open(file_path)
-    return "\n".join([page.get_text() for page in doc])
+    with fitz.open(file_path) as doc:
+        return "\n".join(page.get_text() for page in doc)
 
 def split_into_chunks(text, chunk_size=300):
     sentences = text.split("\n")
@@ -40,9 +42,12 @@ def split_into_chunks(text, chunk_size=300):
     return chunks
 
 def load_and_chunk_documents(doc_dir):
+    if not os.path.exists(doc_dir):
+        raise FileNotFoundError(f"Document directory '{doc_dir}' does not exist")
+
     all_chunks = []
     for file in os.listdir(doc_dir):
-        if file.endswith(".pdf"):
+        if file.lower().endswith(".pdf"):
             full_path = os.path.join(doc_dir, file)
             raw_text = extract_text_from_pdf(full_path)
             chunks = split_into_chunks(raw_text)
